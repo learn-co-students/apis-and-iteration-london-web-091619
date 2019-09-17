@@ -13,20 +13,18 @@ def get_character_movies_from_api(character_name)
       character["films"].each do |film|
         film_string = RestClient.get(film)
         film_hash = JSON.parse(film_string)
-        film_array << film_hash 
-        # binding.pry
-        # puts "Done"
-      end 
-    end 
-  end 
+        film_array << film_hash
+      end
+    end
+  end
   film_array
-end 
+end
 
 def print_films(films)
 films.each do |film|
   puts film['title']
 end
-end 
+end
 
 def show_character_movies(character)
   films = get_character_movies_from_api(character)
