@@ -21,9 +21,9 @@ def get_character_movies_from_api(character_name)
 end
 
 def print_films(films)
-films.each do |film|
-  puts film['title']
-end
+  films.each do |film|
+    puts film['title']
+  end
 end
 
 def show_character_movies(character)
