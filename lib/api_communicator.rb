@@ -2,22 +2,20 @@ require 'rest-client'
 require 'json'
 require 'pry'
 
-def get_character_movies_from_api(character_name)
-  character_data = RestClient.get('http://swapi.co/api/people/1')
+def get_character_from_api(character_name)
   response_string = RestClient.get('http://www.swapi.co/api/people/')
-  response_hash = JSON.parse(response_string)["results"]
+  response_hash = JSON.parse(response_string)['results']
+  response_hash.select { |character| character['name'] == character_name }[0]
+end
 
-  film_array = []
-  response_hash.each do |character|
-    if character["name"] == character_name
-      character["films"].each do |film|
-        film_string = RestClient.get(film)
-        film_hash = JSON.parse(film_string)
-        film_array << film_hash
-      end
-    end
+def get_films_from_character(character_hash)
+  films = []
+  character_hash['films'].each do |film|
+    film_string = RestClient.get(film)
+    film_hash = JSON.parse(film_string)
+    films << film_hash
   end
-  film_array
+  films
 end
 
 def print_films(films)
@@ -27,12 +25,7 @@ def print_films(films)
 end
 
 def show_character_movies(character)
-  films = get_character_movies_from_api(character)
+  character_hash = get_character_from_api(character)
+  films = get_films_from_character(character_hash)
   print_films(films)
 end
-
-
-## BONUS
-
-# that `get_character_movies_from_api` method is probably pretty long. Does it do more than one job?
-# can you split it up into helper methods?
