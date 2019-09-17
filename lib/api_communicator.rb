@@ -5,7 +5,7 @@ require 'pry'
 def get_character_from_api(character_name)
   response_string = RestClient.get('http://www.swapi.co/api/people/')
   response_hash = JSON.parse(response_string)['results']
-  response_hash.select { |character| character['name'] == character_name }[0]
+  response_hash.select { |character| character['name'].downcase == character_name }.first
 end
 
 def get_films_from_character(character_hash)
